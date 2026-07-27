@@ -1,38 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="night">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b0907" />
+<meta name="theme-color" content="#100c09" />
 <title>Eranda &amp; Ramesha — An Invitation</title>
-<meta name="description" content="Together with our families, we request the pleasure of your company at our wedding celebration." />
+<meta name="description" content="Together with our families, we request the pleasure of your company at our wedding celebration. 12 · 12 · 2026 — Colombo." />
 
 <!-- Typography: Pinyon Script (names) · Marcellus (headings) · Cormorant Garamond (quotes) · Jost (body) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Marcellus&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Marcellus&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
 
 <!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="sections.css" />
 </head>
 
 <body class="is-locked">
 
 <!-- ============================================================
-     1. OPENING EXPERIENCE — dark stage, dust, glowing envelope
+     0. SHARED SVG DEFINITIONS (gradients + glow filters)
+     ============================================================ -->
+<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#8a6b2e" />
+      <stop offset="28%"  stop-color="#c8a253" />
+      <stop offset="52%"  stop-color="#f7e6b6" />
+      <stop offset="76%"  stop-color="#c8a253" />
+      <stop offset="100%" stop-color="#8a6b2e" />
+    </linearGradient>
+    <linearGradient id="goldGradV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#f7e6b6" />
+      <stop offset="50%"  stop-color="#c8a253" />
+      <stop offset="100%" stop-color="#8a6b2e" />
+    </linearGradient>
+    <linearGradient id="blushGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#f0d3cd" />
+      <stop offset="100%" stop-color="#c8a253" />
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.4" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     1. PRELOADER — monogram draws itself while the page settles
+     ============================================================ -->
+<div class="preloader" id="preloader">
+  <div class="preloader__glow" aria-hidden="true"></div>
+
+  <div class="preloader__inner">
+    <svg class="mono mono--pre" viewBox="0 0 240 200" aria-hidden="true">
+      <circle class="mono__ring" cx="98"  cy="100" r="56" />
+      <circle class="mono__ring mono__ring--b" cx="142" cy="100" r="56" />
+      <text class="mono__char" x="86"  y="118">E</text>
+      <text class="mono__char" x="154" y="118">R</text>
+      <path class="mono__sprig" d="M120 168 C 104 160 92 148 90 132 M120 168 C 136 160 148 148 150 132 M120 168 L120 146" />
+    </svg>
+
+    <div class="preloader__meter" aria-hidden="true"><span class="preloader__fill" id="preFill"></span></div>
+    <p class="preloader__count"><span id="preCount">0</span><i>%</i></p>
+    <p class="preloader__label">Folding the invitation</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     2. OPENING EXPERIENCE — dark stage, dust, glowing envelope
      ============================================================ -->
 <div class="opening" id="opening">
   <canvas class="opening__dust" id="dustCanvas" aria-hidden="true"></canvas>
+  <span class="opening__beam" aria-hidden="true"></span>
+  <span class="opening__shock" id="openShock" aria-hidden="true"></span>
+  <span class="opening__flash" id="openFlash" aria-hidden="true"></span>
 
   <div class="opening__inner">
     <p class="opening__eyebrow">The wedding of</p>
 
-    <button class="envelope" id="envelope" aria-label="Open the invitation">
+    <button class="envelope" id="envelope" aria-label="Open the invitation" aria-expanded="false">
       <span class="envelope__halo" aria-hidden="true"></span>
+      <span class="envelope__ripple" aria-hidden="true"></span>
 
       <span class="envelope__stage" aria-hidden="true">
+        <span class="envelope__shadow"></span>
         <span class="envelope__pocket"></span>
 
         <span class="envelope__letter">
@@ -43,96 +98,156 @@
         </span>
 
         <span class="envelope__front"></span>
-        <span class="envelope__flap"></span>
-        <span class="envelope__seal">Eranda<i>&amp;</i>Ramesha</span>
+        <span class="envelope__flap"><span class="envelope__flapShine"></span></span>
+
+        <span class="envelope__seal">
+          <span class="seal__half seal__half--l"></span>
+          <span class="seal__half seal__half--r"></span>
+          <span class="seal__mark">E<i>&amp;</i>R</span>
+        </span>
       </span>
     </button>
 
-    <h1 class="opening__title" data-split>You are invited</h1>
+    <h1 class="opening__title grad" data-split>You are invited</h1>
     <p class="opening__hint"><i class="fa-solid fa-hand-pointer"></i> Tap the envelope to open</p>
   </div>
 </div>
 
 <!-- ============================================================
-     2. AMBIENT LAYERS — gradient, rays, orbs, noise, vignette
+     3. AMBIENT LAYERS — mesh, aurora, silk, rays, grain, vignette
      ============================================================ -->
 <div class="ambient" aria-hidden="true">
-  <div class="ambient__gradient"></div>
+  <div class="ambient__mesh"></div>
+  <div class="ambient__aurora"></div>
+  <div class="ambient__silk"></div>
   <div class="ambient__rays"></div>
   <div class="ambient__orb ambient__orb--a"></div>
   <div class="ambient__orb ambient__orb--b"></div>
   <div class="ambient__orb ambient__orb--c"></div>
-  <div class="ambient__noise"></div>
+  <div class="ambient__grain"></div>
   <div class="ambient__vignette"></div>
 </div>
 
-<!-- Slow floating flowers, leaves, petals, sparkles, butterflies (JS-populated) -->
-<div class="flora" id="flora" aria-hidden="true"></div>
+<!-- Canvas effects: drifting petals + celebration bursts -->
+<canvas class="fx fx--petals" id="petalCanvas" aria-hidden="true"></canvas>
+<canvas class="fx fx--burst"  id="burstCanvas" aria-hidden="true"></canvas>
 
-<!-- Cursor glow + scroll progress -->
+<!-- Cursor + reading progress -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <span class="cursor__ring"></span>
+  <span class="cursor__dot"></span>
+  <span class="cursor__label" id="cursorLabel">View</span>
+</div>
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span class="progress__bar" id="progressBar"></span></div>
 
 <!-- ============================================================
-     3. FLOATING MUSIC PLAYER
+     4. HUD — brand, theme switch, music
      ============================================================ -->
-<aside class="player" id="player" aria-label="Background music">
-  <button class="player__toggle" id="musicToggle" aria-pressed="false" aria-label="Play background music">
-    <i class="fa-solid fa-play" id="musicIcon"></i>
-    <span class="player__pulse" aria-hidden="true"></span>
-  </button>
-  <div class="player__panel">
-    <span class="player__label">Ambience</span>
-    <input class="player__volume" id="volume" type="range" min="0" max="100" value="55" aria-label="Volume" />
+<header class="topbar" id="topbar">
+  <a class="brand" href="#hero" aria-label="Back to the top">
+    <span class="brand__mono">E<i>&amp;</i>R</span>
+    <span class="brand__date">12 &middot; 12 &middot; 26</span>
+  </a>
+
+  <div class="tools">
+    <button class="tool" id="themeToggle" aria-label="Switch to daylight theme" aria-pressed="true">
+      <i class="fa-regular fa-sun" id="themeIcon"></i>
+    </button>
+
+    <div class="tool tool--music" id="player">
+      <button class="tool__btn" id="musicToggle" aria-pressed="false" aria-label="Play background music">
+        <i class="fa-solid fa-play" id="musicIcon"></i>
+        <span class="tool__pulse" aria-hidden="true"></span>
+      </button>
+      <div class="tool__panel">
+        <span class="eq" id="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <input class="tool__volume" id="volume" type="range" min="0" max="100" value="55" aria-label="Volume" />
+      </div>
+    </div>
   </div>
-</aside>
+</header>
+
+<!-- Section rail -->
+<nav class="dots" id="dots" aria-label="Sections"></nav>
 
 <!-- ============================================================
-     4. THE INVITATION
+     5. THE INVITATION
      ============================================================ -->
 <main class="site" id="site" aria-hidden="true">
 
   <!-- ------------------------------ HERO ------------------------------ -->
-  <section class="hero" id="hero">
+  <section class="hero" id="hero" data-nav="Invitation">
     <div class="hero__sparks" id="heroSparks" aria-hidden="true"></div>
 
-    <!-- Animated floral corners (SVG path drawing) -->
-    <svg class="floral floral--tl" viewBox="0 0 220 220" aria-hidden="true">
-      <path class="floral__stem" d="M4 4 C 70 18, 120 52, 140 112 M4 4 C 18 70, 52 120, 112 140" />
-      <path class="floral__leaf" d="M52 40 C 78 30, 96 44, 96 66 C 74 72, 56 62, 52 40 Z" />
-      <path class="floral__leaf" d="M40 52 C 30 78, 44 96, 66 96 C 72 74, 62 56, 40 52 Z" />
-      <circle class="floral__bud" cx="140" cy="112" r="4.5" />
-      <circle class="floral__bud" cx="112" cy="140" r="4.5" />
-      <circle class="floral__bud" cx="128" cy="128" r="2.5" />
-    </svg>
-    <svg class="floral floral--br" viewBox="0 0 220 220" aria-hidden="true">
-      <path class="floral__stem" d="M4 4 C 70 18, 120 52, 140 112 M4 4 C 18 70, 52 120, 112 140" />
-      <path class="floral__leaf" d="M52 40 C 78 30, 96 44, 96 66 C 74 72, 56 62, 52 40 Z" />
-      <path class="floral__leaf" d="M40 52 C 30 78, 44 96, 66 96 C 72 74, 62 56, 40 52 Z" />
-      <circle class="floral__bud" cx="140" cy="112" r="4.5" />
-      <circle class="floral__bud" cx="112" cy="140" r="4.5" />
-      <circle class="floral__bud" cx="128" cy="128" r="2.5" />
+    <!-- Ornamental frame -->
+    <svg class="flourish flourish--top" viewBox="0 0 600 96" aria-hidden="true">
+      <g class="flourish__g">
+        <path class="fl-line" d="M300 74 C 262 74 250 44 214 44 C 182 44 172 72 198 78 C 218 82 226 62 208 54" />
+        <path class="fl-line" d="M300 74 C 338 74 350 44 386 44 C 418 44 428 72 402 78 C 382 82 374 62 392 54" />
+        <path class="fl-line" d="M214 44 C 172 22 118 26 74 50" />
+        <path class="fl-line" d="M386 44 C 428 22 482 26 526 50" />
+        <path class="fl-leaf" d="M300 40 C 286 52 286 62 300 72 C 314 62 314 52 300 40 Z" />
+        <path class="fl-leaf" d="M258 60 C 268 50 282 52 286 62 C 274 70 262 68 258 60 Z" />
+        <path class="fl-leaf" d="M342 60 C 332 50 318 52 314 62 C 326 70 338 68 342 60 Z" />
+        <circle class="fl-gem" cx="300" cy="30" r="4.5" />
+        <circle class="fl-gem" cx="74"  cy="50" r="3" />
+        <circle class="fl-gem" cx="526" cy="50" r="3" />
+      </g>
     </svg>
 
-    <div class="hero__inner" data-parallax="0.14">
-      <p class="eyebrow hero__eyebrow">Together with our families</p>
+    <div class="hero__inner">
 
-      <div class="names">
-        <h2 class="name" data-hand>Eranda</h2>
-        <span class="names__amp">&amp;</span>
-        <h2 class="name name--delay" data-hand>Ramesha</h2>
+      <div class="crest" data-parallax="0.06">
+        <svg class="crest__svg" viewBox="0 0 260 260" aria-hidden="true">
+          <path id="crestCircle" fill="none" d="M130,130 m-104,0 a104,104 0 1,1 208,0 a104,104 0 1,1 -208,0" />
+          <text class="crest__text">
+            <textPath href="#crestCircle" startOffset="0">
+              ERANDA &amp; RAMESHA &nbsp;&middot;&nbsp; 12 &middot; 12 &middot; 2026 &nbsp;&middot;&nbsp; COLOMBO &nbsp;&middot;&nbsp;
+            </textPath>
+          </text>
+          <circle class="crest__hair" cx="130" cy="130" r="86" />
+          <g class="crest__mono">
+            <circle class="mono__ring" cx="116" cy="126" r="34" />
+            <circle class="mono__ring mono__ring--b" cx="144" cy="126" r="34" />
+            <text class="mono__char mono__char--sm" x="108" y="138">E</text>
+            <text class="mono__char mono__char--sm" x="152" y="138">R</text>
+          </g>
+        </svg>
       </div>
 
+      <p class="eyebrow hero__eyebrow" data-parallax="0.03">Together with our families</p>
+
+      <h1 class="names">
+        <span class="name grad" data-chars>Eranda</span>
+        <span class="names__amp" aria-hidden="true">
+          <span class="names__ampLine"></span>
+          <em>&amp;</em>
+          <span class="names__ampLine"></span>
+        </span>
+        <span class="name grad" data-chars data-chars-delay="0.5">Ramesha</span>
+      </h1>
+
       <p class="hero__invite">
-        Together with our families, we request the pleasure of your company
-        at our wedding celebration.
+        We request the pleasure of your company as we make
+        the oldest promise in the world.
       </p>
 
       <div class="divider" aria-hidden="true"><span></span><i class="fa-solid fa-gem"></i><span></span></div>
 
       <p class="hero__save">Save the Date</p>
-      <p class="hero__date">12 <em>&middot;</em> 12 <em>&middot;</em> 2026</p>
-      <p class="hero__place">Saturday &middot; Half past four in the afternoon</p>
+      <p class="hero__date" data-parallax="-0.04">
+        <b>12</b><em>&middot;</em><b>12</b><em>&middot;</em><b>2026</b>
+      </p>
+      <p class="hero__place">Saturday &middot; Half past four &middot; Colombo, Sri Lanka</p>
+
+      <div class="hero__actions">
+        <button class="btn btn--gold magnetic" id="calBtn" type="button">
+          <span class="btn__text"><i class="fa-regular fa-calendar-plus"></i> Add to calendar</span>
+          <span class="btn__shine" aria-hidden="true"></span>
+        </button>
+        <a class="btn btn--ghost magnetic" href="#rsvp"><i class="fa-regular fa-paper-plane"></i> Reply</a>
+      </div>
     </div>
 
     <a class="scroll-cue" href="#story" aria-label="Scroll to our story">
@@ -141,100 +256,134 @@
     </a>
   </section>
 
+  <!-- ----------------------------- RIBBON ----------------------------- -->
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon__row" data-marquee="1">
+      <span class="ribbon__track">
+        <b>Eranda &amp; Ramesha</b><i class="fa-solid fa-gem"></i>
+        <b>12 &middot; 12 &middot; 2026</b><i class="fa-solid fa-heart"></i>
+        <b>The Grand Ballroom</b><i class="fa-solid fa-gem"></i>
+        <b>Colombo</b><i class="fa-solid fa-heart"></i>
+      </span>
+    </div>
+    <div class="ribbon__row ribbon__row--rev" data-marquee="-1">
+      <span class="ribbon__track">
+        <b>Save the date</b><i class="fa-solid fa-dove"></i>
+        <b>Black tie</b><i class="fa-solid fa-champagne-glasses"></i>
+        <b>Poruwa at half past four</b><i class="fa-solid fa-dove"></i>
+        <b>Dinner &amp; dancing</b><i class="fa-solid fa-champagne-glasses"></i>
+      </span>
+    </div>
+  </div>
+
   <!-- --------------------------- LOVE STORY --------------------------- -->
-  <section class="section story" id="story">
+  <section class="section story" id="story" data-nav="Our story">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">How it happened</p>
-      <h3 class="section__title" data-reveal="blur">Our Love Story</h3>
+      <h2 class="section__title grad" data-words>Our Love Story</h2>
       <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-heart"></i><span></span></div>
     </header>
 
     <div class="timeline" id="timeline">
-      <div class="timeline__rail" aria-hidden="true"><span class="timeline__fill" id="timelineFill"></span></div>
+      <div class="timeline__rail" aria-hidden="true">
+        <span class="timeline__fill" id="timelineFill"></span>
+        <span class="timeline__comet" id="timelineComet"></span>
+      </div>
 
       <article class="tl-item tl-item--left" data-reveal="left">
-        <div class="tl-card glass">
+        <div class="tl-card glass" data-tilt>
           <span class="tl-card__year">Spring 2019</span>
-          <h4 class="tl-card__title">First Meeting</h4>
+          <h3 class="tl-card__title">First Meeting</h3>
           <p>A rainy afternoon, a crowded café, one shared umbrella. Neither of us remembers what we talked about — only that we stayed until closing.</p>
+          <span class="tl-card__glow" aria-hidden="true"></span>
         </div>
         <span class="tl-node" aria-hidden="true"><i class="fa-solid fa-mug-saucer"></i></span>
       </article>
 
       <article class="tl-item tl-item--right" data-reveal="right">
-        <div class="tl-card glass">
-          <span class="tl-card__year">2019 — 2021</span>
-          <h4 class="tl-card__title">Friendship</h4>
+        <div class="tl-card glass" data-tilt>
+          <span class="tl-card__year">2019 &mdash; 2021</span>
+          <h3 class="tl-card__title">Friendship</h3>
           <p>Two years of long calls, borrowed books and terrible cooking experiments. Somewhere in between, best friend quietly became something more.</p>
+          <span class="tl-card__glow" aria-hidden="true"></span>
         </div>
         <span class="tl-node" aria-hidden="true"><i class="fa-solid fa-envelope-open-text"></i></span>
       </article>
 
       <article class="tl-item tl-item--left" data-reveal="left">
-        <div class="tl-card glass">
+        <div class="tl-card glass" data-tilt>
           <span class="tl-card__year">December 2024</span>
-          <h4 class="tl-card__title">The Proposal</h4>
+          <h3 class="tl-card__title">The Proposal</h3>
           <p>At the end of a quiet pier, with the lights coming on across the bay, one question — and the easiest yes ever given.</p>
+          <span class="tl-card__glow" aria-hidden="true"></span>
         </div>
         <span class="tl-node" aria-hidden="true"><i class="fa-solid fa-ring"></i></span>
       </article>
 
       <article class="tl-item tl-item--right" data-reveal="right">
-        <div class="tl-card glass tl-card--accent">
+        <div class="tl-card glass tl-card--accent" data-tilt>
           <span class="tl-card__year">12 December 2026</span>
-          <h4 class="tl-card__title">The Wedding</h4>
+          <h3 class="tl-card__title">The Wedding</h3>
           <p>And this is where you come in. We would love for you to stand with us on the day everything begins.</p>
+          <span class="tl-card__glow" aria-hidden="true"></span>
         </div>
         <span class="tl-node tl-node--glow" aria-hidden="true"><i class="fa-solid fa-champagne-glasses"></i></span>
       </article>
-
-      <span class="tl-heart" style="--d:0s;--x:8%"  aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
-      <span class="tl-heart" style="--d:5s;--x:82%" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
-      <span class="tl-heart" style="--d:9s;--x:46%" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
     </div>
   </section>
 
   <!-- ----------------------------- COUPLE ----------------------------- -->
-  <section class="section couple" id="couple">
+  <section class="section couple" id="couple" data-nav="The couple">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">The two of us</p>
-      <h3 class="section__title" data-reveal="blur">Bride &amp; Groom</h3>
+      <h2 class="section__title grad" data-words>Bride &amp; Groom</h2>
       <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-gem"></i><span></span></div>
     </header>
 
     <div class="couple__grid">
-      <article class="person" data-reveal="right" data-tilt>
-        <div class="person__frame">
+      <article class="person" data-reveal="right">
+        <div class="person__frame" data-tilt>
           <span class="person__ring" aria-hidden="true"></span>
-          <div class="person__photo" role="img" aria-label="Photograph of Eranda">
-            <i class="fa-solid fa-camera-retro"></i>
-            <span>Groom photo</span>
+          <span class="person__ring person__ring--2" aria-hidden="true"></span>
+          <span class="person__arc" aria-hidden="true"></span>
+          <div class="person__photo">
+            <img src="imgs/IMG_1873.jpg" alt="Portrait of Eranda, the groom" loading="lazy" />
+            <span class="person__veil" aria-hidden="true"></span>
           </div>
           <svg class="person__leaf person__leaf--l" viewBox="0 0 120 120" aria-hidden="true">
             <path d="M110 10 C 60 14, 18 46, 12 108 C 66 104, 106 68, 110 10 Z" />
             <path d="M110 10 C 78 44, 44 76, 12 108" />
           </svg>
         </div>
-        <h4 class="person__name" data-hand>Eranda</h4>
+        <h3 class="person__name" data-hand>Eranda</h3>
         <p class="person__role">The Groom</p>
         <p class="person__note">Patient, unreasonably funny, and the calm in every storm. Son of Mr. &amp; Mrs. Perera.</p>
       </article>
 
-      <div class="couple__amp" data-reveal="scale" aria-hidden="true">&amp;</div>
+      <div class="couple__amp" data-reveal="scale" aria-hidden="true">
+        <span class="couple__ampGlyph">&amp;</span>
+        <svg class="couple__rings" viewBox="0 0 120 70">
+          <circle class="cr" cx="46" cy="35" r="22" />
+          <circle class="cr cr--b" cx="74" cy="35" r="22" />
+        </svg>
+      </div>
 
-      <article class="person" data-reveal="left" data-tilt>
-        <div class="person__frame">
+      <article class="person" data-reveal="left">
+        <div class="person__frame" data-tilt>
           <span class="person__ring" aria-hidden="true"></span>
-          <div class="person__photo" role="img" aria-label="Photograph of Ramesha">
+          <span class="person__ring person__ring--2" aria-hidden="true"></span>
+          <span class="person__arc" aria-hidden="true"></span>
+          <div class="person__photo person__photo--empty">
             <i class="fa-solid fa-camera-retro"></i>
             <span>Bride photo</span>
+            <span class="person__veil" aria-hidden="true"></span>
           </div>
           <svg class="person__leaf person__leaf--r" viewBox="0 0 120 120" aria-hidden="true">
             <path d="M110 10 C 60 14, 18 46, 12 108 C 66 104, 106 68, 110 10 Z" />
             <path d="M110 10 C 78 44, 44 76, 12 108" />
           </svg>
         </div>
-        <h4 class="person__name" data-hand>Ramesha</h4>
+        <h3 class="person__name" data-hand>Ramesha</h3>
         <p class="person__role">The Bride</p>
         <p class="person__note">Warm, fearless, and the reason the house always smells of cinnamon. Daughter of Mr. &amp; Mrs. Fernando.</p>
       </article>
@@ -242,168 +391,387 @@
   </section>
 
   <!-- ----------------------------- DETAILS ---------------------------- -->
-  <section class="section details" id="details">
+  <section class="section details" id="details" data-nav="Details">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">Everything you need</p>
-      <h3 class="section__title" data-reveal="blur">Wedding Details</h3>
+      <h2 class="section__title grad" data-words>Wedding Details</h2>
       <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-gem"></i><span></span></div>
+      <p class="section__lead" data-reveal="up">Hover a card &mdash; or tap on a phone &mdash; to turn it over.</p>
     </header>
 
     <div class="cards">
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-regular fa-calendar-days"></i>
-        <h4 class="card__title">Date</h4>
-        <p class="card__lead">Saturday, 12 December 2026</p>
-        <p class="card__sub">Please arrive fifteen minutes early</p>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="Date — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-regular fa-calendar-days"></i>
+            <h3 class="card__title">Date</h3>
+            <p class="card__lead">Saturday, 12 December 2026</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">Please arrive by 4:15 so we can begin exactly on time. The ceremony is short, the tea afterwards is not.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-regular fa-clock"></i>
-        <h4 class="card__title">Ceremony</h4>
-        <p class="card__lead">4:30 in the afternoon</p>
-        <p class="card__sub">Poruwa ceremony followed by tea</p>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="Ceremony — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-regular fa-clock"></i>
+            <h3 class="card__title">Ceremony</h3>
+            <p class="card__lead">4:30 in the afternoon</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">A traditional Poruwa ceremony in the garden pavilion, followed by tea, photographs and far too many hugs.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-solid fa-location-dot"></i>
-        <h4 class="card__title">Venue</h4>
-        <p class="card__lead">The Grand Ballroom</p>
-        <p class="card__sub">Venue address line, Colombo</p>
-        <a class="btn btn--ghost magnetic" href="https://www.google.com/maps/search/?api=1&amp;query=The+Grand+Ballroom+Colombo" target="_blank" rel="noopener">
-          <i class="fa-solid fa-map-location-dot"></i> Open in Maps
-        </a>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="Venue — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-solid fa-location-dot"></i>
+            <h3 class="card__title">Venue</h3>
+            <p class="card__lead">The Grand Ballroom</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">Venue address line, Colombo 03. Valet parking from the main gate.</p>
+            <a class="btn btn--ghost magnetic" href="https://www.google.com/maps/search/?api=1&amp;query=The+Grand+Ballroom+Colombo" target="_blank" rel="noopener">
+              <i class="fa-solid fa-map-location-dot"></i> Open in Maps
+            </a>
+          </div>
+        </div>
       </article>
 
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-solid fa-champagne-glasses"></i>
-        <h4 class="card__title">Reception</h4>
-        <p class="card__lead">7:00 in the evening</p>
-        <p class="card__sub">Dinner, dancing and far too much cake</p>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="Reception — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-solid fa-champagne-glasses"></i>
+            <h3 class="card__title">Reception</h3>
+            <p class="card__lead">7:00 in the evening</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">Dinner, speeches nobody rehearsed, dancing until the band gives up, and a cake we are told is enormous.</p>
+          </div>
+        </div>
       </article>
 
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-solid fa-user-tie"></i>
-        <h4 class="card__title">Dress Code</h4>
-        <p class="card__lead">Black tie &middot; Champagne tones</p>
-        <p class="card__sub">Gold, ivory and blush are very welcome</p>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="Dress code — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-solid fa-user-tie"></i>
+            <h3 class="card__title">Dress Code</h3>
+            <p class="card__lead">Black tie &middot; Champagne tones</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">Gold, ivory and blush are very welcome. Comfortable shoes are welcome too &mdash; there is a lot of garden.</p>
+            <span class="swatches" aria-hidden="true"><i style="--c:#c8a253"></i><i style="--c:#f2dca4"></i><i style="--c:#fbf7f0"></i><i style="--c:#ecccc6"></i><i style="--c:#3b3128"></i></span>
+          </div>
+        </div>
       </article>
 
-      <article class="card glass" data-reveal="up" data-tilt>
-        <i class="card__icon fa-regular fa-envelope"></i>
-        <h4 class="card__title">RSVP</h4>
-        <p class="card__lead">Kindly reply by 1 November</p>
-        <p class="card__sub">So we can save you a seat</p>
-        <a class="btn btn--ghost magnetic" href="#rsvp"><i class="fa-regular fa-paper-plane"></i> Reply now</a>
+      <article class="flip" data-reveal="up" tabindex="0" role="button" aria-label="RSVP — flip for more">
+        <div class="flip__inner">
+          <div class="flip__face flip__front glass">
+            <i class="card__icon fa-regular fa-envelope"></i>
+            <h3 class="card__title">RSVP</h3>
+            <p class="card__lead">Kindly reply by 1 November</p>
+            <span class="flip__hint"><i class="fa-solid fa-rotate"></i></span>
+          </div>
+          <div class="flip__face flip__back">
+            <p class="card__sub">Three quick questions, one minute of your time, and a seat with your name on it.</p>
+            <a class="btn btn--ghost magnetic" href="#rsvp"><i class="fa-regular fa-paper-plane"></i> Reply now</a>
+          </div>
+        </div>
       </article>
     </div>
   </section>
 
   <!-- ---------------------------- COUNTDOWN --------------------------- -->
-  <section class="section countdown" id="countdown">
+  <section class="section countdown" id="countdown" data-nav="Countdown">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">The wait</p>
-      <h3 class="section__title" data-reveal="blur">Counting Down</h3>
+      <h2 class="section__title grad" data-words>Counting Down</h2>
     </header>
 
     <div class="clock" id="clock" data-reveal="scale">
-      <div class="clock__unit"><span class="clock__num" id="cdDays">00</span><span class="clock__label">Days</span></div>
-      <span class="clock__sep">:</span>
-      <div class="clock__unit"><span class="clock__num" id="cdHours">00</span><span class="clock__label">Hours</span></div>
-      <span class="clock__sep">:</span>
-      <div class="clock__unit"><span class="clock__num" id="cdMins">00</span><span class="clock__label">Minutes</span></div>
-      <span class="clock__sep">:</span>
-      <div class="clock__unit"><span class="clock__num" id="cdSecs">00</span><span class="clock__label">Seconds</span></div>
+      <div class="clock__unit">
+        <svg class="dial" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="dial__track" cx="60" cy="60" r="52" />
+          <circle class="dial__bar" id="dialDays" cx="60" cy="60" r="52" />
+        </svg>
+        <span class="clock__num" id="cdDays">00</span>
+        <span class="clock__label">Days</span>
+      </div>
+      <div class="clock__unit">
+        <svg class="dial" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="dial__track" cx="60" cy="60" r="52" />
+          <circle class="dial__bar" id="dialHours" cx="60" cy="60" r="52" />
+        </svg>
+        <span class="clock__num" id="cdHours">00</span>
+        <span class="clock__label">Hours</span>
+      </div>
+      <div class="clock__unit">
+        <svg class="dial" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="dial__track" cx="60" cy="60" r="52" />
+          <circle class="dial__bar" id="dialMins" cx="60" cy="60" r="52" />
+        </svg>
+        <span class="clock__num" id="cdMins">00</span>
+        <span class="clock__label">Minutes</span>
+      </div>
+      <div class="clock__unit">
+        <svg class="dial" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="dial__track" cx="60" cy="60" r="52" />
+          <circle class="dial__bar" id="dialSecs" cx="60" cy="60" r="52" />
+        </svg>
+        <span class="clock__num" id="cdSecs">00</span>
+        <span class="clock__label">Seconds</span>
+      </div>
     </div>
-    <p class="clock__note" data-reveal="up">until we say “I do”</p>
+
+    <p class="clock__note" data-reveal="up">until we say &ldquo;I do&rdquo;</p>
+  </section>
+
+  <!-- ---------------------------- SCHEDULE ---------------------------- -->
+  <section class="section schedule" id="schedule" data-nav="The day">
+    <header class="section__head">
+      <p class="eyebrow" data-reveal="up">Twelfth of December</p>
+      <h2 class="section__title grad" data-words>Order of the Day</h2>
+      <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-regular fa-clock"></i><span></span></div>
+    </header>
+
+    <ol class="agenda" id="agenda">
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-mug-hot"></i></span>
+        <span class="agenda__time">3:45 <em>pm</em></span>
+        <h3 class="agenda__title">Guests arrive</h3>
+        <p>Welcome drinks on the terrace while the sun is still generous.</p>
+      </li>
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-ring"></i></span>
+        <span class="agenda__time">4:30 <em>pm</em></span>
+        <h3 class="agenda__title">Poruwa ceremony</h3>
+        <p>The traditional ceremony, the vows, and the part everyone cries at.</p>
+      </li>
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-camera-retro"></i></span>
+        <span class="agenda__time">5:15 <em>pm</em></span>
+        <h3 class="agenda__title">Photographs &amp; tea</h3>
+        <p>Golden hour in the garden. Please be in at least one of them.</p>
+      </li>
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-utensils"></i></span>
+        <span class="agenda__time">7:00 <em>pm</em></span>
+        <h3 class="agenda__title">Reception &amp; dinner</h3>
+        <p>Doors open, seats are found, speeches are survived.</p>
+      </li>
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-music"></i></span>
+        <span class="agenda__time">9:30 <em>pm</em></span>
+        <h3 class="agenda__title">First dance</h3>
+        <p>Then the floor is yours until the band admits defeat.</p>
+      </li>
+      <li class="agenda__item" data-reveal="up">
+        <span class="agenda__dot" aria-hidden="true"><i class="fa-solid fa-star"></i></span>
+        <span class="agenda__time">11:00 <em>pm</em></span>
+        <h3 class="agenda__title">Farewell</h3>
+        <p>Sparklers, one last song, and a very long goodbye.</p>
+      </li>
+    </ol>
   </section>
 
   <!-- ----------------------------- GALLERY ---------------------------- -->
-  <section class="section gallery" id="gallery">
+  <section class="section gallery" id="gallery" data-nav="Gallery">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">Moments</p>
-      <h3 class="section__title" data-reveal="blur">Our Gallery</h3>
+      <h2 class="section__title grad" data-words>Our Gallery</h2>
       <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-camera"></i><span></span></div>
     </header>
 
     <div class="masonry" id="masonry">
-      <!-- Photo placeholders — swap the <div class="shot__img"> for <img> when you have files -->
-      <figure class="shot" data-reveal="mask" data-shot="Engagement · 01"><div class="shot__img shot__img--tall"><i class="fa-regular fa-image"></i><span>Photo 01</span></div><figcaption>Engagement</figcaption></figure>
-      <figure class="shot" data-reveal="mask" data-shot="The proposal · 02"><div class="shot__img"><i class="fa-regular fa-image"></i><span>Photo 02</span></div><figcaption>The proposal</figcaption></figure>
-      <figure class="shot" data-reveal="mask" data-shot="Home · 03"><div class="shot__img shot__img--wide"><i class="fa-regular fa-image"></i><span>Photo 03</span></div><figcaption>Home</figcaption></figure>
-      <figure class="shot" data-reveal="mask" data-shot="Travels · 04"><div class="shot__img shot__img--tall"><i class="fa-regular fa-image"></i><span>Photo 04</span></div><figcaption>Travels</figcaption></figure>
-      <figure class="shot" data-reveal="mask" data-shot="Family · 05"><div class="shot__img"><i class="fa-regular fa-image"></i><span>Photo 05</span></div><figcaption>Family</figcaption></figure>
-      <figure class="shot" data-reveal="mask" data-shot="Golden hour · 06"><div class="shot__img shot__img--wide"><i class="fa-regular fa-image"></i><span>Photo 06</span></div><figcaption>Golden hour</figcaption></figure>
+      <figure class="shot" data-reveal="mask" data-caption="Engagement" data-src="imgs/IMG_1873.jpg">
+        <div class="shot__img"><img src="imgs/IMG_1873.jpg" alt="Engagement portrait" loading="lazy" /></div>
+        <figcaption>Engagement</figcaption>
+      </figure>
+      <figure class="shot" data-reveal="mask" data-caption="The proposal">
+        <div class="shot__img shot__img--tall"><i class="fa-regular fa-image"></i><span>Photo 02</span></div>
+        <figcaption>The proposal</figcaption>
+      </figure>
+      <figure class="shot" data-reveal="mask" data-caption="Home">
+        <div class="shot__img shot__img--wide"><i class="fa-regular fa-image"></i><span>Photo 03</span></div>
+        <figcaption>Home</figcaption>
+      </figure>
+      <figure class="shot" data-reveal="mask" data-caption="Travels">
+        <div class="shot__img shot__img--tall"><i class="fa-regular fa-image"></i><span>Photo 04</span></div>
+        <figcaption>Travels</figcaption>
+      </figure>
+      <figure class="shot" data-reveal="mask" data-caption="Family">
+        <div class="shot__img"><i class="fa-regular fa-image"></i><span>Photo 05</span></div>
+        <figcaption>Family</figcaption>
+      </figure>
+      <figure class="shot" data-reveal="mask" data-caption="Golden hour">
+        <div class="shot__img shot__img--wide"><i class="fa-regular fa-image"></i><span>Photo 06</span></div>
+        <figcaption>Golden hour</figcaption>
+      </figure>
     </div>
   </section>
 
   <!-- ------------------------------ QUOTE ----------------------------- -->
   <section class="section quotes" id="quotes">
     <blockquote class="quote" data-quote>
-      <p>“Whatever our souls are made of, his and mine are the same.”</p>
+      <p data-illuminate>Whatever our souls are made of, his and mine are the same.</p>
       <cite>Emily Brontë</cite>
     </blockquote>
 
     <div class="divider divider--wide" aria-hidden="true"><span></span><i class="fa-solid fa-infinity"></i><span></span></div>
 
     <blockquote class="quote" data-quote>
-      <p>“I have found the one whom my soul loves.”</p>
+      <p data-illuminate>I have found the one whom my soul loves.</p>
       <cite>Song of Solomon 3:4</cite>
     </blockquote>
 
     <div class="divider divider--wide" aria-hidden="true"><span></span><i class="fa-solid fa-dove"></i><span></span></div>
 
     <blockquote class="quote" data-quote>
-      <p>“Two hearts, one story — and the best chapter starts here.”</p>
+      <p data-illuminate>Two hearts, one story — and the best chapter starts here.</p>
       <cite>Eranda &amp; Ramesha</cite>
     </blockquote>
   </section>
 
+  <!-- ------------------------------ WISHES ---------------------------- -->
+  <section class="section wishes" id="wishes" data-nav="Wishes">
+    <header class="section__head">
+      <p class="eyebrow" data-reveal="up">The guestbook</p>
+      <h2 class="section__title grad" data-words>Wishes &amp; Blessings</h2>
+      <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-feather"></i><span></span></div>
+    </header>
+
+    <div class="wish-wall" id="wishWall" aria-live="polite"></div>
+
+    <form class="wish-form glass" id="wishForm" data-reveal="up" novalidate>
+      <div class="field field--half">
+        <input type="text" id="wName" placeholder=" " autocomplete="name" maxlength="40" required />
+        <label for="wName">Your name</label>
+      </div>
+      <div class="field field--half">
+        <input type="text" id="wFrom" placeholder=" " maxlength="40" />
+        <label for="wFrom">Where you&rsquo;re writing from <span>(optional)</span></label>
+      </div>
+      <div class="field">
+        <textarea id="wMsg" rows="3" placeholder=" " maxlength="240" required></textarea>
+        <label for="wMsg">Leave a wish for the couple</label>
+      </div>
+      <button class="btn btn--gold magnetic" type="submit">
+        <span class="btn__text"><i class="fa-solid fa-feather-pointed"></i> Add to the guestbook</span>
+        <span class="btn__shine" aria-hidden="true"></span>
+      </button>
+    </form>
+  </section>
+
   <!-- ------------------------------ RSVP ------------------------------ -->
-  <section class="section rsvp" id="rsvp">
+  <section class="section rsvp" id="rsvp" data-nav="RSVP">
     <header class="section__head">
       <p class="eyebrow" data-reveal="up">Will you join us?</p>
-      <h3 class="section__title" data-reveal="blur">Reply to the Invitation</h3>
+      <h2 class="section__title grad" data-words>Reply to the Invitation</h2>
       <div class="divider" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-regular fa-envelope"></i><span></span></div>
     </header>
 
-    <form class="form glass" id="rsvpForm" novalidate data-reveal="up">
-      <div class="field">
-        <input type="text" id="rName" name="name" placeholder=" " autocomplete="name" required />
-        <label for="rName">Full name</label>
-        <small class="field__error" data-error-for="rName"></small>
+    <form class="wizard glass" id="rsvpForm" data-reveal="up" novalidate>
+      <div class="wizard__head">
+        <ol class="wizard__steps" id="wizSteps">
+          <li class="is-active"><b>1</b><span>Guest</span></li>
+          <li><b>2</b><span>Attending</span></li>
+          <li><b>3</b><span>Message</span></li>
+        </ol>
+        <div class="wizard__progress" aria-hidden="true"><i id="wizBar"></i></div>
       </div>
 
-      <div class="field field--half">
-        <select id="rAttend" name="attending" required>
-          <option value="" selected disabled></option>
-          <option value="yes">Joyfully accepts</option>
-          <option value="no">Regretfully declines</option>
-        </select>
-        <label for="rAttend">Attending</label>
-        <small class="field__error" data-error-for="rAttend"></small>
+      <div class="wizard__viewport" id="wizViewport">
+        <div class="wizard__track" id="wizTrack">
+
+          <fieldset class="wizard__panel" data-step="0">
+            <legend class="wizard__legend">Who shall we save a seat for?</legend>
+            <div class="field">
+              <input type="text" id="rName" name="name" placeholder=" " autocomplete="name" required />
+              <label for="rName">Full name</label>
+              <small class="field__error" data-error-for="rName"></small>
+            </div>
+            <div class="field">
+              <input type="tel" id="rPhone" name="phone" placeholder=" " autocomplete="tel" required />
+              <label for="rPhone">Phone number</label>
+              <small class="field__error" data-error-for="rPhone"></small>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__panel" data-step="1">
+            <legend class="wizard__legend">Can you make it?</legend>
+            <div class="choice" role="radiogroup" aria-label="Attending">
+              <label class="choice__opt">
+                <input type="radio" name="attending" value="yes" required />
+                <span class="choice__box">
+                  <i class="fa-solid fa-champagne-glasses"></i>
+                  <b>Joyfully accepts</b>
+                  <small>Count me in</small>
+                </span>
+              </label>
+              <label class="choice__opt">
+                <input type="radio" name="attending" value="no" />
+                <span class="choice__box">
+                  <i class="fa-regular fa-face-sad-tear"></i>
+                  <b>Regretfully declines</b>
+                  <small>Will be there in spirit</small>
+                </span>
+              </label>
+            </div>
+            <small class="field__error field__error--block" data-error-for="attending"></small>
+
+            <div class="stepper" id="guestStepper">
+              <span class="stepper__label">Number of guests</span>
+              <div class="stepper__ctrl">
+                <button type="button" class="stepper__btn" data-step-dir="-1" aria-label="Fewer guests"><i class="fa-solid fa-minus"></i></button>
+                <span class="stepper__value" id="guestValue">1</span>
+                <button type="button" class="stepper__btn" data-step-dir="1" aria-label="More guests"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <input type="hidden" id="rGuests" name="guests" value="1" />
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__panel" data-step="2">
+            <legend class="wizard__legend">Anything you&rsquo;d like to say?</legend>
+            <div class="field">
+              <textarea id="rMessage" name="message" rows="4" placeholder=" " maxlength="300"></textarea>
+              <label for="rMessage">A note for the couple <span>(optional)</span></label>
+            </div>
+            <p class="wizard__summary" id="wizSummary"></p>
+          </fieldset>
+
+        </div>
       </div>
 
-      <div class="field field--half">
-        <input type="number" id="rGuests" name="guests" min="1" max="6" placeholder=" " required />
-        <label for="rGuests">Number of guests</label>
-        <small class="field__error" data-error-for="rGuests"></small>
+      <div class="wizard__nav">
+        <button class="btn btn--ghost" type="button" id="wizPrev" hidden><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <button class="btn btn--gold magnetic" type="button" id="wizNext">
+          <span class="btn__text">Continue <i class="fa-solid fa-arrow-right"></i></span>
+          <span class="btn__shine" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn--gold magnetic" type="submit" id="wizSend" hidden>
+          <span class="btn__text"><i class="fa-regular fa-paper-plane"></i> Send reply</span>
+          <span class="btn__shine" aria-hidden="true"></span>
+        </button>
       </div>
 
-      <div class="field">
-        <input type="tel" id="rPhone" name="phone" placeholder=" " autocomplete="tel" required />
-        <label for="rPhone">Phone number</label>
-        <small class="field__error" data-error-for="rPhone"></small>
+      <div class="wizard__done" id="wizDone" hidden>
+        <svg class="tick" viewBox="0 0 80 80" aria-hidden="true">
+          <circle class="tick__ring" cx="40" cy="40" r="34" />
+          <path class="tick__mark" d="M24 41 L35 52 L57 29" />
+        </svg>
+        <p class="wizard__doneText" id="wizDoneText"></p>
+        <button class="btn btn--ghost" type="button" id="wizReset">Send another reply</button>
       </div>
-
-      <div class="field">
-        <textarea id="rMessage" name="message" rows="4" placeholder=" "></textarea>
-        <label for="rMessage">A note for the couple <span>(optional)</span></label>
-      </div>
-
-      <button class="btn btn--gold magnetic" type="submit" id="rsvpSubmit">
-        <span class="btn__text">Send reply</span>
-        <span class="btn__shine" aria-hidden="true"></span>
-      </button>
 
       <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
     </form>
@@ -413,25 +781,37 @@
   <footer class="footer" id="footer">
     <div class="divider divider--wide" data-reveal="scale" aria-hidden="true"><span></span><i class="fa-solid fa-gem"></i><span></span></div>
     <p class="footer__thanks" data-reveal="up">Thank you for celebrating with us.</p>
-    <p class="footer__names" data-hand>Eranda &amp; Ramesha</p>
+    <p class="footer__names grad" data-hand>Eranda &amp; Ramesha</p>
     <span class="footer__heart" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
-    <p class="footer__small">12 &middot; 12 &middot; 2026 &nbsp;—&nbsp; Colombo, Sri Lanka</p>
+    <p class="footer__small">12 &middot; 12 &middot; 2026 &nbsp;&mdash;&nbsp; Colombo, Sri Lanka</p>
   </footer>
 </main>
 
 <!-- ============================================================
-     5. LIGHTBOX
+     6. LIGHTBOX
      ============================================================ -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
   <button class="lightbox__close" id="lbClose" aria-label="Close photo"><i class="fa-solid fa-xmark"></i></button>
   <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+
   <figure class="lightbox__stage">
     <div class="lightbox__frame" id="lbFrame"><i class="fa-regular fa-image"></i></div>
-    <figcaption class="lightbox__caption" id="lbCaption"></figcaption>
+    <figcaption class="lightbox__caption"><span id="lbCaption"></span><b id="lbCount"></b></figcaption>
   </figure>
+
   <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
+<!-- Back to top -->
+<button class="totop" id="toTop" aria-label="Back to the top">
+  <svg viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="totop__track" cx="24" cy="24" r="21" />
+    <circle class="totop__bar" id="topBar" cx="24" cy="24" r="21" />
+  </svg>
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<script src="effects.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
